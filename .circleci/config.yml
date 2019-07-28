@@ -1,24 +1,17 @@
-# .circleci/config.yml
-version: 2
+version: 2 # use CircleCI 2.0
 jobs:
-  run-setup-uninstall:
-    macos:
-      xcode: "11.0.0"
+  build:
+    docker:
+      - image: centos/centos7
     steps:
       - checkout
       - run:
-          name: run setup
+          name: "setup"
           command: |
             ls
             ./setup.sh
-      - run: 
-          name: run uninstall
+      - run:
+          name: "uninstall"
           command: |
             yes
             ./setup.sh -u
-
-workflows:
-  version: 2
-  run-setup-uninstall:
-    jobs:
-      - run-setup-uninstall

@@ -7,6 +7,14 @@ declare os=$(uname -s)
 case "${os}" in
 "Darwin")
     ;;
+"Linux")
+    if [[ -f /etc/redhat-release ]] ; then
+        os="CentOS"
+    else
+        echo "not supported linux (yet)"
+        exit 1
+    fi
+    ;;
 *)
     echo "not supported os (yet)"
     exit 1 
@@ -28,7 +36,7 @@ EOF
 # check and install package manager
 function check_pkg_manager() {
     case "${os}" in
-    "Darwin" )
+    "Darwin")
         command -v brew >/dev/null 2>&1
         if [[ $? = 1 ]] ; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -71,7 +79,15 @@ function setup_tmux() {
     echo "> setup tmux"
     command -v tmux >/dev/null 2>&1
     if [[ $? = 1 ]] ; then
-        brew install tmux
+        case "${os}" in
+        "Darwin")
+            brew install tmux
+            ;;
+        "CentOS")
+            sudo yum install -y tmux
+            ;;
+        esac
+        tmux -V
     else
         echo "tmux installed"
     fi
@@ -87,7 +103,14 @@ function uninstall_tmux() {
     fi
     confirm_uninstall "tmux"
     if [[ $? = 0 ]] ; then
-        brew uninstall tmux
+        case "${os}" in
+        "Darwin")
+            brew uninstall tmux
+            ;;
+        "CentOS")
+            sudo yum uninstall -y tmux
+            ;;
+        esac
     fi
 }
 
@@ -96,7 +119,14 @@ function setup_spectacle() {
     echo "> setup spectacle"
     command -v spectacle >/dev/null 2>&1
     if [[ $? = 1 ]] ; then
-        brew install spectacle
+        case "${os}" in
+        "Darwin")
+            brew install spectacle
+            ;;
+        *)
+            echo "not supported"
+            ;;
+        esac
     else
         echo "spectacle installed"
     fi
@@ -105,7 +135,14 @@ function uninstall_spectacle() {
     echo "> uninstall spectacle"
     confirm_uninstall "spectacle"
     if [[ $? = 0 ]] ; then
-        brew uninstall spectacle
+        case "${os}" in
+        "Darwin")
+            brew uninstall spectacle
+            ;;
+        *)
+            echo "nothing to do"
+            ;;
+        esac
     fi
 }
 
