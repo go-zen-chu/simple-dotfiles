@@ -92,7 +92,7 @@ function setup_tmux() {
             tar -xvf tmux-${TMUX_VERSION}.tar.gz
             cd tmux-${TMUX_VERSION}
             ./configure && make
-            make install
+            make install > /dev/null
             popd
             ;;
         esac
@@ -125,6 +125,7 @@ function uninstall_tmux() {
             ;;
         esac
     fi
+    echo "uninstall tmux finished"
 }
 
 #=============================== spectacle ===============================
@@ -157,6 +158,7 @@ function uninstall_spectacle() {
             ;;
         esac
     fi
+    echo "uninstall spactacle finished"
 }
 
 function setup() {
