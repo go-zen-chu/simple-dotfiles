@@ -75,6 +75,7 @@ function confirm_uninstall() {
 }
 
 #=============================== tmux ===============================
+declare TMUX_VERSION="2.7"
 function setup_tmux() {
     echo "> setup tmux"
     command -v tmux >/dev/null 2>&1
@@ -87,9 +88,9 @@ function setup_tmux() {
             pushd $PWD
             yum install -y gcc make libevent-devel ncurses-devel
             cd /usr/local/src
-            curl -o tmux-2.7.tar.gz -L https://github.com/tmux/tmux/releases/download/2.7/tmux-2.7.tar.gz
-            tar -xvf tmux-2.7.tar.gz
-            cd tmux-2.7
+            curl -o tmux-${TMUX_VERSION}.tar.gz -L https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
+            tar -xvf tmux-${TMUX_VERSION}.tar.gz
+            cd tmux-${TMUX_VERSION}
             ./configure && make
             make install
             popd
@@ -116,9 +117,9 @@ function uninstall_tmux() {
             brew uninstall tmux
             ;;
         "CentOS")
-            yum remove -y libevent-devel ncurses-devel
             pushd $PWD
-            cd /usr/local/src/tmux-2.7
+            yum remove -y libevent-devel ncurses-devel
+            cd /usr/local/src/tmux-${TMUX_VERSION}
             make uninstall
             popd
             ;;

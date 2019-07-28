@@ -9,7 +9,9 @@ jobs:
           name: "setup"
           command: |
             ./setup.sh
+            # tmux should be installed
+            command -v tmux >/dev/null 2>&1
       - run:
           name: "uninstall"
           command: |
-            ./setup.sh -u
+            yes | ./setup.sh -u
