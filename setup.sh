@@ -87,7 +87,7 @@ function setup_tmux() {
             pushd $PWD
             yum install -y libevent-devel ncurses-devel
             cd /usr/local/src
-            curl -o tmux-2.7.tar.gz https://github.com/tmux/tmux/releases/download/2.7/tmux-2.7.tar.gz
+            curl https://github.com/tmux/tmux/releases/download/2.7/tmux-2.7.tar.gz -o tmux-2.7.tar.gz
             tar -xvf tmux-2.7.tar.gz
             cd tmux-2.7
             ./configure && make
