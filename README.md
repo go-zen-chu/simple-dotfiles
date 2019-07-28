@@ -6,12 +6,13 @@ Simple dotfiles for primer.
 
 ## Currently supported OS
 
-- Mac
+- MacOS
+- CentOS
 
 ## supported tools
 
-- spectacle
 - tmux
+- spectacle (only for MacOS)
 
 ## Install
 
