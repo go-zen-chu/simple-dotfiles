@@ -2,7 +2,7 @@ version: 2 # use CircleCI 2.0
 jobs:
   build:
     docker:
-      - image: centos/centos7
+      - image: centos:7
     steps:
       - checkout
       - run:
