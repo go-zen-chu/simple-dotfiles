@@ -9,9 +9,9 @@ jobs:
           name: "setup"
           command: |
             ls
+            find . -name sudo
             ./setup.sh
       - run:
           name: "uninstall"
           command: |
-            yes
             ./setup.sh -u
