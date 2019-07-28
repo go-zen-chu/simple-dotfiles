@@ -85,7 +85,7 @@ function setup_tmux() {
             ;;
         "CentOS")
             pushd $PWD
-            yum install -y libevent-devel ncurses-devel
+            yum install -y gcc libevent-devel ncurses-devel
             cd /usr/local/src
             curl -o tmux-2.7.tar.gz -L https://github.com/tmux/tmux/releases/download/2.7/tmux-2.7.tar.gz
             ls
