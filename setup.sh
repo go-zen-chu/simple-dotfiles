@@ -131,19 +131,14 @@ function uninstall_tmux() {
 #=============================== spectacle ===============================
 function setup_spectacle() {
     echo "> setup spectacle"
-    command -v spectacle >/dev/null 2>&1
-    if [[ $? = 1 ]] ; then
-        case "${os}" in
-        "Darwin")
-            brew cask install spectacle
-            ;;
-        *)
-            echo "not supported"
-            ;;
-        esac
-    else
-        echo "spectacle installed"
-    fi
+    case "${os}" in
+    "Darwin")
+        brew cask install spectacle
+        ;;
+    *)
+        echo "not supported"
+        ;;
+    esac
 }
 function uninstall_spectacle() {
     echo "> uninstall spectacle"
