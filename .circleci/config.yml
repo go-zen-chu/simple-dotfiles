@@ -14,4 +14,5 @@ jobs:
       - run:
           name: "uninstall"
           command: |
-            yes | ./setup.sh -u
+            # true for ignoring exit 141. https://discuss.circleci.com/t/failed-build-exit-code-141/26335
+            yes | ./setup.sh -u || true
