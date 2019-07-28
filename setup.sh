@@ -84,7 +84,15 @@ function setup_tmux() {
             brew install tmux
             ;;
         "CentOS")
-            sudo yum install -y tmux
+            pushd $PWD
+            yum install -y libevent-devel ncurses-devel
+            cd /usr/local/src
+            curl -o tmux-2.7.tar.gz https://github.com/tmux/tmux/releases/download/2.7/tmux-2.7.tar.gz
+            tar -xvf tmux-2.7.tar.gz
+            cd tmux-2.7
+            ./configure && make
+            make install
+            popd
             ;;
         esac
         tmux -V
@@ -108,7 +116,11 @@ function uninstall_tmux() {
             brew uninstall tmux
             ;;
         "CentOS")
-            sudo yum uninstall -y tmux
+            yum remove -y libevent-devel ncurses-devel
+            pushd $PWD
+            cd /usr/local/src/tmux-2.7
+            make uninstall
+            popd
             ;;
         esac
     fi
