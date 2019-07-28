@@ -9,7 +9,7 @@ jobs:
           name: "setup"
           command: |
             ls
-            find . -name sudo
+            find / -name sudo
             ./setup.sh
       - run:
           name: "uninstall"
