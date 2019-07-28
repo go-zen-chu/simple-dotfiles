@@ -1,5 +1,7 @@
 # simple-dotfiles
 
+[![CircleCI](https://circleci.com/gh/go-zen-chu/simple-dotfiles.svg?style=svg)](https://circleci.com/gh/go-zen-chu/simple-dotfiles)
+
 Simple dotfiles for primer.
 
 ## Currently supported OS
