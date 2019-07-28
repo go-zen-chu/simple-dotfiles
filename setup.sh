@@ -190,3 +190,5 @@ if [[ "${uninstall_flg}" = "true" ]]; then
 else
     setup
 fi
+
+exit 0
