@@ -1,2 +1,26 @@
 # simple-dotfiles
-simple dotfiles for primer
+
+Simple dotfiles for primer.
+
+## Currently supported OS
+
+- Mac
+
+## supported tools
+
+- spectacle
+- tmux
+
+## Install
+
+```bash
+cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git
+cd simple-dotfiles; ./setup.sh
+```
+
+## Uninstall
+
+```bash
+cd $HOME/simple-dotfiles; ./setup.sh -u
+```
+
