@@ -8,8 +8,6 @@ jobs:
       - run:
           name: "setup"
           command: |
-            ls
-            find / -name sudo
             ./setup.sh
       - run:
           name: "uninstall"
