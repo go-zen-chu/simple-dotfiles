@@ -1,0 +1,18 @@
+version: 2 # use CircleCI 2.0
+jobs:
+  build:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - run:
+          name: "setup"
+          command: |
+            ./setup.sh
+            # tmux should be installed
+            command -v tmux >/dev/null 2>&1
+      - run:
+          name: "uninstall"
+          command: |
+            # true for ignoring exit 141. https://discuss.circleci.com/t/failed-build-exit-code-141/26335
+            yes | ./setup.sh -u || true
