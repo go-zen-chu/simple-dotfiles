@@ -135,7 +135,7 @@ function setup_spectacle() {
     if [[ $? = 1 ]] ; then
         case "${os}" in
         "Darwin")
-            brew install spectacle
+            brew cask install spectacle
             ;;
         *)
             echo "not supported"
