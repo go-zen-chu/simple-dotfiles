@@ -71,6 +71,7 @@ function confirm_install() {
             *)  echo "abort install"; return 1 ;;
         esac
     fi
+    echo "${cmd} exists"
     return 2 # already installed
 }
 
@@ -86,6 +87,7 @@ function confirm_uninstall() {
             *)  echo "abort uninstall"; return 1 ;;
         esac
     fi
+    echo "${cmd} not exists"
     return 2 # not installed
 }
 
