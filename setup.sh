@@ -59,6 +59,21 @@ function confirm_overwrite() {
     return 0
 }
 
+# returns 0 if user want to install
+function confirm_install() {
+    declare cmd=$1
+    command -v ${cmd} >/dev/null 2>&1
+    if [[ $? != 0 ]] ; then
+        read -r -p "Do you install ${cmd}? [y/n]" -n 1 response
+        echo ""
+        case "${response}" in
+            y|Y ) return 0 ;;
+            *)  echo "abort install"; return 1 ;;
+        esac
+    fi
+    return 2 # already installed
+}
+
 # returns 0 if cmd should be uninstalled
 function confirm_uninstall() {
     declare cmd=$1
@@ -71,21 +86,21 @@ function confirm_uninstall() {
             *)  echo "abort uninstall"; return 1 ;;
         esac
     fi
-    return 1
+    return 2 # not installed
 }
 
 #=============================== tmux ===============================
 declare TMUX_VERSION="2.7"
 function setup_tmux() {
     echo "> setup tmux"
-    command -v tmux >/dev/null 2>&1
-    if [[ $? = 1 ]] ; then
+    # checking it's return value
+    if confirm_install "tmux" ; then
         case "${os}" in
         "Darwin")
             brew install tmux
             ;;
         "CentOS")
-            pushd $PWD
+            pushd "$PWD"
             yum install -y gcc make libevent-devel ncurses-devel
             cd /usr/local/src
             curl -o tmux-${TMUX_VERSION}.tar.gz -L https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
@@ -100,24 +115,24 @@ function setup_tmux() {
     else
         echo "tmux installed"
     fi
-    confirm_overwrite "${HOME}/.tmux.conf"
-    if [[ $? = 0 ]] ; then
-        cp ./tmux/.tmux.conf ${HOME}
+
+    if confirm_overwrite "${HOME}/.tmux.conf" ; then
+        cp ./tmux/.tmux.conf "${HOME}"
     fi
 }
 function uninstall_tmux() {
     echo "> uninstall tmux"
     if [[ -f "${HOME}/.tmux.conf" ]] ; then
-        rm ${HOME}/.tmux.conf
+        rm "${HOME}/.tmux.conf"
     fi
-    confirm_uninstall "tmux"
-    if [[ $? = 0 ]] ; then
+
+    if confirm_uninstall "tmux" ; then
         case "${os}" in
         "Darwin")
             brew uninstall tmux
             ;;
         "CentOS")
-            pushd $PWD
+            pushd "$PWD"
             yum remove -y libevent-devel ncurses-devel
             cd /usr/local/src/tmux-${TMUX_VERSION}
             make uninstall
@@ -133,7 +148,9 @@ function setup_spectacle() {
     echo "> setup spectacle"
     case "${os}" in
     "Darwin")
-        brew cask install spectacle
+        if confirm_install "spectacle" ; then
+            brew cask install spectacle
+        fi
         ;;
     *)
         echo "not supported"
@@ -142,17 +159,16 @@ function setup_spectacle() {
 }
 function uninstall_spectacle() {
     echo "> uninstall spectacle"
-    confirm_uninstall "spectacle"
-    if [[ $? = 0 ]] ; then
-        case "${os}" in
+    case "${os}" in
         "Darwin")
-            brew uninstall spectacle
+            if confirm_uninstall "spectacle" ; then
+                brew uninstall spectacle
+            fi
             ;;
         *)
             echo "nothing to do"
             ;;
-        esac
-    fi
+    esac
     echo "uninstall spactacle finished"
 }
 
