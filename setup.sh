@@ -144,7 +144,6 @@ function uninstall_tmux() {
 }
 
 #=============================== zsh ===============================
-declare zsh_VERSION="2.7"
 function setup_zsh() {
     echo "> setup zsh and zplug"
     # checking it's return value
