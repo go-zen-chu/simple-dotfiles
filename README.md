@@ -23,7 +23,7 @@ Simple dotfiles for primer.
 Place this repo at $HOME
 
 ```bash
-cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git; cd $HOME/simple-dotfiles
+cd $HOME; git clone https://github.com/go-zen-chu/simple-dotfiles.git; cd $HOME/simple-dotfiles
 
 # install tmux
 ./setup.sh --tmux
