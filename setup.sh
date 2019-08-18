@@ -63,7 +63,8 @@ function confirm_overwrite() {
 function confirm_install() {
     declare cmd=$1
     # check command exists
-    if command -v "${cmd}" >/dev/null 2>&1 ; then
+    command -v "${cmd}" >/dev/null 2>&1
+    if [[ $? = 0 ]] ; then
         read -r -p "Do you install ${cmd}? [y/n]" -n 1 response
         echo ""
         case "${response}" in
@@ -79,7 +80,8 @@ function confirm_install() {
 function confirm_uninstall() {
     declare cmd=$1
     # check command exists
-    if command -v "${cmd}" >/dev/null 2>&1 ; then
+    command -v "${cmd}" >/dev/null 2>&1
+    if [[ $? = 0 ]] ; then
         read -r -p "Do you uninstall ${cmd}? [y/n]" -n 1 response
         echo ""
         case "${response}" in
@@ -162,6 +164,7 @@ function setup_zsh() {
         zsh --version
     fi
 
+    touch "${HOME}/local.zsh"
     if confirm_overwrite "${HOME}/.zshrc" ; then
         cp ./zsh/.zshrc "${HOME}"
     fi
@@ -169,6 +172,7 @@ function setup_zsh() {
 function uninstall_zsh() {
     echo "> uninstall zsh"
     if [[ -f "${HOME}/.zshrc" ]] ; then
+        rm -i "${HOME}/local.zsh"
         rm -i "${HOME}/.zshrc"
     fi
 
