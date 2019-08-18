@@ -17,14 +17,18 @@ Simple dotfiles for primer.
 - zsh
   - install zsh, zplug
   - update $HOME/.zshrc and refer ./zsh settings
-- spectacle (only for MacOS)
 
 ## Install
 
-place this repo at $HOME
+Place this repo at $HOME
 
 ```bash
-cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git
+cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git; cd $HOME/simple-dotfiles
+
+# install tmux
+./setup.sh --tmux
+
+# install zsh
+./setup.sh --zsh
+chsh -s /usr/local/bin/zsh
 ```
-
-
