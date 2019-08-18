@@ -12,6 +12,11 @@ Simple dotfiles for primer.
 ## supported tools
 
 - tmux
+  - install tmux
+  - update $HOME/.tmux.conf and refer ./tmux settings
+- zsh
+  - install zsh, zplug
+  - update $HOME/.zshrc and refer ./zsh settings
 - spectacle (only for MacOS)
 
 ## Install

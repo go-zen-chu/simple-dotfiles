@@ -114,8 +114,6 @@ function setup_tmux() {
             ;;
         esac
         tmux -V
-    else
-        echo "tmux installed"
     fi
 
     if confirm_overwrite "${HOME}/.tmux.conf" ; then
@@ -125,7 +123,7 @@ function setup_tmux() {
 function uninstall_tmux() {
     echo "> uninstall tmux"
     if [[ -f "${HOME}/.tmux.conf" ]] ; then
-        rm "${HOME}/.tmux.conf"
+        rm -i "${HOME}/.tmux.conf"
     fi
 
     if confirm_uninstall "tmux" ; then
@@ -143,6 +141,53 @@ function uninstall_tmux() {
         esac
     fi
     echo "uninstall tmux finished"
+}
+
+#=============================== zsh ===============================
+declare zsh_VERSION="2.7"
+function setup_zsh() {
+    echo "> setup zsh and zplug"
+    # checking it's return value
+    if confirm_install "zsh" ; then
+        case "${os}" in
+        "Darwin")
+            brew install zsh
+            brew install zplug
+            ;;
+        "CentOS")
+            yum install -y zsh
+            curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+            ;;
+        esac
+        zsh --version
+    fi
+
+    if confirm_overwrite "${HOME}/.zshrc" ; then
+        cp ./zsh/.zshrc "${HOME}"
+    fi
+}
+function uninstall_zsh() {
+    echo "> uninstall zsh"
+    if [[ -f "${HOME}/.zshrc" ]] ; then
+        rm -i "${HOME}/.zshrc"
+    fi
+
+    if confirm_uninstall "zsh" ; then
+        case "${os}" in
+        "Darwin")
+            brew uninstall zplug
+            brew uninstall zsh
+            ;;
+        "CentOS")
+            pushd "$PWD"
+            yum remove -y libevent-devel ncurses-devel
+            cd /usr/local/src/zsh-${zsh_VERSION}
+            make uninstall
+            popd
+            ;;
+        esac
+    fi
+    echo "uninstall zsh finished"
 }
 
 #=============================== spectacle ===============================
