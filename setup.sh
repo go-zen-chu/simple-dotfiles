@@ -68,7 +68,7 @@ function confirm_install() {
         echo ""
         case "${response}" in
             y|Y ) return 0 ;;
-            *)  echo "abort install"; return 1 ;;
+            *)  echo "abort install"; echo "${response}"; return 1 ;;
         esac
     fi
     echo "${cmd} exists"

@@ -8,7 +8,7 @@ jobs:
       - run:
           name: "setup"
           command: |
-            set -eux
+            set -x
             yes | ./setup.sh || true
             # below commands should be installed
             command -v tmux >/dev/null 2>&1
@@ -16,6 +16,6 @@ jobs:
       - run:
           name: "uninstall"
           command: |
-            set -eux
+            set -x
             # true for ignoring exit 141. https://discuss.circleci.com/t/failed-build-exit-code-141/26335
             yes | ./setup.sh -u || true
