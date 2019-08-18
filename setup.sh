@@ -37,8 +37,7 @@ EOF
 function check_pkg_manager() {
     case "${os}" in
     "Darwin")
-        command -v brew >/dev/null 2>&1
-        if [[ $? = 1 ]] ; then
+        if ! command -v brew >/dev/null 2>&1 ; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         fi
         ;;
@@ -63,8 +62,10 @@ function confirm_overwrite() {
 function confirm_install() {
     declare cmd=$1
     # check command exists
-    if ! command -v "${cmd}" >/dev/null 2>&1 ; then
-        read -r -p "Do you install ${cmd}? [y/n]" -n 1 response
+    command -v "${cmd}" >/dev/null 2>&1
+    if [[ $? -ne 0 ]] ; then
+        echo "Do you install ${cmd}? [y/n]"
+        read -r -n 1 response
         echo ""
         case "${response}" in
             y|Y ) return 0 ;;
@@ -79,8 +80,9 @@ function confirm_install() {
 function confirm_uninstall() {
     declare cmd=$1
     # check command exists
-    if ! command -v "${cmd}" >/dev/null 2>&1 ; then
-        read -r -p "Do you uninstall ${cmd}? [y/n]" -n 1 response
+    if command -v "${cmd}" >/dev/null 2>&1 ; then
+        echo "Do you uninstall ${cmd}? [y/n]"
+        read -r -n 1 response
         echo ""
         case "${response}" in
             y|Y ) return 0 ;;
