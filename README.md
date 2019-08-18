@@ -21,14 +21,10 @@ Simple dotfiles for primer.
 
 ## Install
 
+place this repo at $HOME
+
 ```bash
 cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git
-cd simple-dotfiles; ./setup.sh
 ```
 
-## Uninstall
-
-```bash
-cd $HOME/simple-dotfiles; ./setup.sh -u
-```
 
