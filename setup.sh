@@ -62,8 +62,8 @@ function confirm_overwrite() {
 # returns 0 if user want to install
 function confirm_install() {
     declare cmd=$1
-    command -v ${cmd} >/dev/null 2>&1
-    if [[ $? != 0 ]] ; then
+    # check command exists
+    if command -v "${cmd}" >/dev/null 2>&1 ; then
         read -r -p "Do you install ${cmd}? [y/n]" -n 1 response
         echo ""
         case "${response}" in
@@ -78,8 +78,8 @@ function confirm_install() {
 # returns 0 if cmd should be uninstalled
 function confirm_uninstall() {
     declare cmd=$1
-    command -v ${cmd} >/dev/null 2>&1
-    if [[ $? = 0 ]] ; then
+    # check command exists
+    if command -v "${cmd}" >/dev/null 2>&1 ; then
         read -r -p "Do you uninstall ${cmd}? [y/n]" -n 1 response
         echo ""
         case "${response}" in
