@@ -179,11 +179,8 @@ function uninstall_zsh() {
             brew uninstall zsh
             ;;
         "CentOS")
-            pushd "$PWD"
-            yum remove -y libevent-devel ncurses-devel
-            cd /usr/local/src/zsh-${zsh_VERSION}
-            make uninstall
-            popd
+            rm -r "${ZPLUG_HOME}"
+            yum remove -y zsh
             ;;
         esac
     fi
@@ -223,12 +220,14 @@ function setup() {
     echo "setup"
     check_pkg_manager
     setup_tmux
+    setup_zsh
     setup_spectacle
 }
 
 function uninstall() {
     echo "uninstall"
     uninstall_tmux
+    uninstall_zsh
     uninstall_spectacle
 }
 
