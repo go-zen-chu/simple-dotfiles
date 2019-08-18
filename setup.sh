@@ -24,11 +24,12 @@ esac
 # show usage
 function usage() {
     cat <<EOF
-usage:  ./setup.sh
+usage:  ./setup.sh [option]
 description: setup dotfiles
 option:
   -h : show this help
-  -u : uninstall and erase files
+  --tmux : setup tmux
+  --zsh : setup zsh
 EOF
     exit 0
 }
@@ -37,8 +38,7 @@ EOF
 function check_pkg_manager() {
     case "${os}" in
     "Darwin")
-        command -v brew >/dev/null 2>&1
-        if [[ $? = 1 ]] ; then
+        if ! command -v brew >/dev/null 2>&1 ; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         fi
         ;;
@@ -59,33 +59,35 @@ function confirm_overwrite() {
     return 0
 }
 
-# returns 0 if cmd should be uninstalled
-function confirm_uninstall() {
+# returns 0 if user want to install
+function confirm_install() {
     declare cmd=$1
-    command -v ${cmd} >/dev/null 2>&1
-    if [[ $? = 0 ]] ; then
-        read -r -p "Do you uninstall ${cmd}? [y/n]" -n 1 response
+    # check command exists
+    command -v "${cmd}" >/dev/null 2>&1
+    if [[ $? -ne 0 ]] ; then
+        echo "Do you install ${cmd}? [y/n]"
+        read -r -n 1 response
         echo ""
         case "${response}" in
             y|Y ) return 0 ;;
-            *)  echo "abort uninstall"; return 1 ;;
+            *)  echo "abort install"; return 1 ;;
         esac
     fi
-    return 1
+    echo "${cmd} exists"
+    return 2 # already installed
 }
 
-#=============================== tmux ===============================
 declare TMUX_VERSION="2.7"
 function setup_tmux() {
     echo "> setup tmux"
-    command -v tmux >/dev/null 2>&1
-    if [[ $? = 1 ]] ; then
+    # checking it's return value
+    if confirm_install "tmux" ; then
         case "${os}" in
         "Darwin")
             brew install tmux
             ;;
         "CentOS")
-            pushd $PWD
+            pushd "$PWD"
             yum install -y gcc make libevent-devel ncurses-devel
             cd /usr/local/src
             curl -o tmux-${TMUX_VERSION}.tar.gz -L https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
@@ -97,93 +99,50 @@ function setup_tmux() {
             ;;
         esac
         tmux -V
-    else
-        echo "tmux installed"
     fi
-    confirm_overwrite "${HOME}/.tmux.conf"
-    if [[ $? = 0 ]] ; then
-        cp ./tmux/.tmux.conf ${HOME}
+
+    if confirm_overwrite "${HOME}/.tmux.conf" ; then
+        cp ./tmux/.tmux.conf "${HOME}"
     fi
 }
-function uninstall_tmux() {
-    echo "> uninstall tmux"
-    if [[ -f "${HOME}/.tmux.conf" ]] ; then
-        rm ${HOME}/.tmux.conf
-    fi
-    confirm_uninstall "tmux"
-    if [[ $? = 0 ]] ; then
+
+function setup_zsh() {
+    echo "> setup zsh and zplug"
+    # checking it's return value
+    if confirm_install "zsh" ; then
         case "${os}" in
         "Darwin")
-            brew uninstall tmux
+            brew install zsh
+            brew install zplug
             ;;
         "CentOS")
-            pushd $PWD
-            yum remove -y libevent-devel ncurses-devel
-            cd /usr/local/src/tmux-${TMUX_VERSION}
-            make uninstall
-            popd
+            yum install -y zsh
+            curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
             ;;
         esac
+        zsh --version
     fi
-    echo "uninstall tmux finished"
-}
 
-#=============================== spectacle ===============================
-function setup_spectacle() {
-    echo "> setup spectacle"
-    case "${os}" in
-    "Darwin")
-        brew cask install spectacle
-        ;;
-    *)
-        echo "not supported"
-        ;;
-    esac
-}
-function uninstall_spectacle() {
-    echo "> uninstall spectacle"
-    confirm_uninstall "spectacle"
-    if [[ $? = 0 ]] ; then
-        case "${os}" in
-        "Darwin")
-            brew uninstall spectacle
-            ;;
-        *)
-            echo "nothing to do"
-            ;;
-        esac
+    touch "${HOME}/local.zsh"
+    if confirm_overwrite "${HOME}/.zshrc" ; then
+        cp ./zsh/.zshrc "${HOME}"
     fi
-    echo "uninstall spactacle finished"
-}
-
-function setup() {
-    echo "setup"
-    check_pkg_manager
-    setup_tmux
-    setup_spectacle
-}
-
-function uninstall() {
-    echo "uninstall"
-    uninstall_tmux
-    uninstall_spectacle
 }
 
 # handle args
-uninstall_flg="false"
-while getopts hu OPT; do
+while getopts -- "-:h" OPT; do
     case $OPT in
-    "h" ) usage ;;
-    "u" ) uninstall_flg="true" ;;
-    * ) usage ;;
+    -)
+        case $OPTARG in
+            tmux) setup_tmux ;;
+            zsh) setup_zsh ;;
+            *) usage ;;
+        esac
+        ;;
+    h) usage ;;
+    *) usage ;;
     esac
 done
 shift $((OPTIND - 1))
-
-if [[ "${uninstall_flg}" = "true" ]]; then
-    uninstall
-else
-    setup
-fi
 
 exit 0

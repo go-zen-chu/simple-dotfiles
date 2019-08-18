@@ -12,18 +12,23 @@ Simple dotfiles for primer.
 ## supported tools
 
 - tmux
-- spectacle (only for MacOS)
+  - install tmux
+  - update $HOME/.tmux.conf and refer ./tmux settings
+- zsh
+  - install zsh, zplug
+  - update $HOME/.zshrc and refer ./zsh settings
 
 ## Install
 
-```bash
-cd $HOME; git clone git@github.com:go-zen-chu/simple-dotfiles.git
-cd simple-dotfiles; ./setup.sh
-```
-
-## Uninstall
+Place this repo at $HOME
 
 ```bash
-cd $HOME/simple-dotfiles; ./setup.sh -u
-```
+cd $HOME; git clone https://github.com/go-zen-chu/simple-dotfiles.git; cd $HOME/simple-dotfiles
 
+# install tmux
+./setup.sh --tmux
+
+# install zsh
+./setup.sh --zsh
+chsh -s /usr/local/bin/zsh
+```
