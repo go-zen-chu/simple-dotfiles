@@ -130,7 +130,7 @@ function setup_zsh() {
 }
 
 # handle args
-while getopts -:h OPT; do
+while getopts -- "-:h" OPT; do
     case $OPT in
     -)
         case $OPTARG in
@@ -139,7 +139,7 @@ while getopts -:h OPT; do
             *) usage ;;
         esac
         ;;
-    "h") usage ;;
+    h) usage ;;
     *) usage ;;
     esac
 done

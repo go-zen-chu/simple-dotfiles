@@ -9,6 +9,8 @@ jobs:
           name: "setup"
           command: |
             set -x
+
+            ./setup.sh -h
             # true for ignoring exit 141. https://discuss.circleci.com/t/failed-build-exit-code-141/26335
             yes | ./setup.sh --tmux || true
             # below commands should be installed
