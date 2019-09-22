@@ -15,6 +15,5 @@ jobs:
         ./tmux/setup.sh
     - name: Run zsh setup.sh
       run: |
-        # for container environment, using yes is harmful
-        rm $HOME/.zshrc
+        # yes command causes long execution in container 
         ./zsh/setup.sh
