@@ -1,22 +1,12 @@
 # simple-dotfiles
 
-[![CircleCI](https://circleci.com/gh/go-zen-chu/simple-dotfiles.svg?style=svg)](https://circleci.com/gh/go-zen-chu/simple-dotfiles)
+[![Actions Status](https://github.com/go-zen-chu/simple-dotfiles/workflows/CI/badge.svg)](https://github.com/go-zen-chu/simple-dotfiles/actions)
 
-Simple dotfiles for primer.
+Simple dotfiles for SRE primer.
 
 ## Currently supported OS
 
 - MacOS
-- CentOS
-
-## supported tools
-
-- tmux
-  - install tmux
-  - update $HOME/.tmux.conf and refer ./tmux settings
-- zsh
-  - install zsh, zplug
-  - update $HOME/.zshrc and refer ./zsh settings
 
 ## Install
 
@@ -25,10 +15,12 @@ Place this repo at $HOME
 ```bash
 cd $HOME; git clone https://github.com/go-zen-chu/simple-dotfiles.git; cd $HOME/simple-dotfiles
 
+# mac os specific setup
+./macos/setup.sh
+
 # install tmux
-./setup.sh --tmux
+./tmux/setup.sh
 
 # install zsh
-./setup.sh --zsh
-chsh -s /usr/local/bin/zsh
+./zsh/setup.sh
 ```

@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run macos setup.sh
+      run: |
+        ./macos/setup.sh
+    - name: Run tmux setup.sh
+      run: |
+        ./tmux/setup.sh
+    - name: Run zsh setup.sh
+      run: |
+        # yes command causes long execution in container 
+        ./zsh/setup.sh
