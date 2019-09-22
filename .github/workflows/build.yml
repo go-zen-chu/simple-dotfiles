@@ -15,4 +15,6 @@ jobs:
         ./tmux/setup.sh
     - name: Run zsh setup.sh
       run: |
-        yes | ./zsh/setup.sh
+        # for container environment, using yes is harmful
+        rm $HOME/.zshrc
+        ./zsh/setup.sh
