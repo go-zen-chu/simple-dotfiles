@@ -1,5 +1,7 @@
 # match both capital, small leters
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# tab selecting
+zstyle ':completion:*' menu select
 
 # history setting
 HISTFILE=~/.zsh_history
